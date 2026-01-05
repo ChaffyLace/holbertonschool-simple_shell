@@ -2,17 +2,15 @@
 #define SHELL_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
 
 extern char **environ;
 
-void exec_cmd(char **args, char *input, char *prog_name, int count);
-char **parse_input(char *input);
-void free_args(char **args);
+void execute_command(char **args, char *input, char *name, int count);
+char **split_line(char *line);
+void free_array(char **arr);
 
 #endif
