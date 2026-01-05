@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * execute_command - Forks and executes a command
+ * @args: Array of arguments
+ * @input: The original input string (to free on error)
+ * @name: Name of the shell (argv[0])
+ * @count: Line counter
+ */
 void execute_command(char **args, char *input, char *name, int count)
 {
 	pid_t pid;
