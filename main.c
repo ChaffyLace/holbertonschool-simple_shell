@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * main - Main loop for the shell
+ * @ac: Argument count
+ * @av: Argument vector
+ * Return: 0 on success
+ */
 int main(int ac, char **av)
 {
 	char *line = NULL;
