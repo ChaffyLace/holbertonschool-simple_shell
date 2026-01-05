@@ -1,5 +1,10 @@
 #include "shell.h"
 
+/**
+ * split_line - Splits a string into words
+ * @line: The input string
+ * Return: Array of strings
+ */
 char **split_line(char *line)
 {
 	int bufsize = 64, i = 0;
