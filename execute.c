@@ -1,19 +1,16 @@
 #include "shell.h"
 
 /**
- * execute_command - fork and execute a command
- * @args: arguments array
- * @line: input line
- * @name: program name
- * @count: command counter
+ * execute_command - forks and runs the command
+ * @args: arguments
+ * @name: shell name
+ * @count: line count
  */
-void execute_command(char **args, char *line, char *name, int count)
+void execute_command(char **args, char *name, int count)
 {
+	char *cmd_path = NULL;
 	pid_t pid;
 	int status;
-	char *cmd_path = NULL;
-
-	(void)line;
 
 	if (args[0][0] == '/' || args[0][0] == '.')
 	{
@@ -21,7 +18,9 @@ void execute_command(char **args, char *line, char *name, int count)
 			cmd_path = strdup(args[0]);
 	}
 	else
+	{
 		cmd_path = find_path(args[0]);
+	}
 
 	if (!cmd_path)
 	{
@@ -33,11 +32,14 @@ void execute_command(char **args, char *line, char *name, int count)
 	if (pid == 0)
 	{
 		if (execve(cmd_path, args, environ) == -1)
+		{
 			perror(name);
-		exit(127);
+			exit(127);
+		}
 	}
 	else
+	{
 		wait(&status);
-
+	}
 	free(cmd_path);
 }
