@@ -1,30 +1,55 @@
 #include "shell.h"
 
 /**
- * verifier_builtin - checks if the command is a builtin
- * @args: array of arguments
- * @ligne: the original line to free
- * Return: 1 if it was a builtin, 0 otherwise
+ * main - main loop of the simple shell
+ * @ac: argument count (unused)
+ * @av: argument vector (contains program name)
+ * Return: 0 on success
  */
-int verifier_builtin(char **args, char *ligne)
+int main(int ac, char **av)
 {
-	int i;
+	char *ligne = NULL;
+	size_t taille = 0;
+	ssize_t n_lus;
+	char **arguments;
+	int compteur = 0;
+	(void)ac;
 
-	if (strcmp(args[0], "exit") == 0)
+	while (1)
 	{
-		liberer_grille(args);
-		free(ligne);
-		exit(0);
-	}
+		compteur++;
 
-	if (strcmp(args[0], "env") == 0)
-	{
-		for (i = 0; environ[i]; i++)
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "($) ", 4);
+
+		n_lus = getline(&ligne, &taille, stdin);
+
+		if (n_lus == -1)
 		{
-			write(STDOUT_FILENO, environ[i], strlen(environ[i]));
-			write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			break;
 		}
-		return (1);
+
+		if (ligne[n_lus - 1] == '\n')
+			ligne[n_lus - 1] = '\0';
+
+		arguments = decouper_ligne(ligne);
+
+		if (arguments && arguments[0])
+		{
+			if (verifier_builtin(arguments, ligne))
+			{
+				liberer_grille(arguments);
+				continue;
+			}
+
+			executer(arguments, av[0], compteur);
+		}
+
+		liberer_grille(arguments);
 	}
+
+	free(ligne);
 	return (0);
 }
