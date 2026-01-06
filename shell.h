@@ -16,5 +16,6 @@ void liberer_grille(char **grille);
 char *trouver_variable(const char *nom);
 char *chercher_chemin(char *commande);
 void executer(char **args, char *nom_prog, int n_ligne);
+int verifier_builtin(char **args, char *ligne);
 
 #endif
