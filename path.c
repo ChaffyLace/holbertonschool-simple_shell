@@ -1,56 +1,57 @@
 #include "shell.h"
 
 /**
- * _getenv - finds an environment variable
- * @name: variable name
- * Return: value string
+ * trouver_variable - looks for an environment variable
+ * @nom: variable name
+ * Return: value or NULL if not found
  */
-char *_getenv(const char *name)
+char *trouver_variable(const char *nom)
 {
-	int i, len;
+	int i, longueur;
 
-	len = strlen(name);
+	longueur = strlen(nom);
 	for (i = 0; environ[i]; i++)
 	{
-		if (strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
-			return (environ[i] + len + 1);
+		if (strncmp(environ[i], nom, longueur) == 0 &&
+		    environ[i][longueur] == '=')
+			return (environ[i] + longueur + 1);
 	}
 	return (NULL);
 }
 
 /**
- * find_path - finds the full path for a command
- * @cmd: command name
+ * chercher_chemin - builds the full path of a command
+ * @commande: name of the command
  * Return: full path or NULL
  */
-char *find_path(char *cmd)
+char *chercher_chemin(char *commande)
 {
-	char *path, *path_cp, *dir, *full;
+	char *path, *copie_path, *dossier, *complet;
 	struct stat st;
 
-	path = _getenv("PATH");
+	path = trouver_variable("PATH");
 	if (!path || strlen(path) == 0)
 		return (NULL);
 
-	path_cp = strdup(path);
-	dir = strtok(path_cp, ":");
-	while (dir)
+	copie_path = strdup(path);
+	dossier = strtok(copie_path, ":");
+	while (dossier)
 	{
-		full = malloc(strlen(dir) + strlen(cmd) + 2);
-		if (!full)
+		complet = malloc(strlen(dossier) + strlen(commande) + 2);
+		if (!complet)
 			return (NULL);
-		strcpy(full, dir);
-		strcat(full, "/");
-		strcat(full, cmd);
+		strcpy(complet, dossier);
+		strcat(complet, "/");
+		strcat(complet, commande);
 
-		if (stat(full, &st) == 0)
+		if (stat(complet, &st) == 0)
 		{
-			free(path_cp);
-			return (full);
+			free(copie_path);
+			return (complet);
 		}
-		free(full);
-		dir = strtok(NULL, ":");
+		free(complet);
+		dossier = strtok(NULL, ":");
 	}
-	free(path_cp);
+	free(copie_path);
 	return (NULL);
 }
