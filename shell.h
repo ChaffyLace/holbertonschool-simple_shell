@@ -11,10 +11,10 @@
 
 extern char **environ;
 
-char **split_line(char *line);
-void free_array(char **arr);
-char *_getenv(const char *name);
-char *find_path(char *cmd);
-void execute_command(char **args, char *name, int count);
+char **decouper_ligne(char *ligne);
+void liberer_grille(char **grille);
+char *trouver_variable(const char *nom);
+char *chercher_chemin(char *commande);
+void executer(char **args, char *nom_prog, int n_ligne);
 
 #endif
