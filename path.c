@@ -9,6 +9,9 @@ char *trouver_variable(const char *nom)
 {
 	int i, longueur;
 
+	if (nom == NULL || environ == NULL)
+		return (NULL);
+
 	longueur = strlen(nom);
 	for (i = 0; environ[i]; i++)
 	{
@@ -39,7 +42,10 @@ char *chercher_chemin(char *commande)
 	{
 		complet = malloc(strlen(dossier) + strlen(commande) + 2);
 		if (!complet)
+		{
+			free(copie_path);
 			return (NULL);
+		}
 		strcpy(complet, dossier);
 		strcat(complet, "/");
 		strcat(complet, commande);
