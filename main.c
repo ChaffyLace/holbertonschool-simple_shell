@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+ * main - entry point of the shell
+ * @ac: argument count
+ * @av: argument vector
+ *
+ * Return: 0
+ */
 int main(int ac, char **av)
 {
 	char *line = NULL;
@@ -34,6 +41,7 @@ int main(int ac, char **av)
 
 		free_array(args);
 	}
+
 	free(line);
 	return (0);
 }
