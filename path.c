@@ -1,13 +1,20 @@
 #include "shell.h"
 
+/**
+ * find_path - finds full path of a command
+ * @cmd: command name
+ *
+ * Return: full path or NULL
+ */
 char *find_path(char *cmd)
 {
-	char *path = getenv("PATH");
+	char *path;
 	char *path_copy;
 	char *dir;
 	char *full_path;
 	struct stat st;
 
+	path = getenv("PATH");
 	if (!path)
 		return (NULL);
 
@@ -24,9 +31,11 @@ char *find_path(char *cmd)
 			free(path_copy);
 			return (full_path);
 		}
+
 		free(full_path);
 		dir = strtok(NULL, ":");
 	}
+
 	free(path_copy);
 	return (NULL);
 }
