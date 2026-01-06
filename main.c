@@ -38,6 +38,7 @@ int main(int ac, char **av)
 			if (strcmp(arguments[0], "exit") == 0)
 			{
 				liberer_grille(arguments);
+				free(ligne);
 				break;
 			}
 			executer(arguments, av[0], compteur);
