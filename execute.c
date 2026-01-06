@@ -1,45 +1,43 @@
 #include "shell.h"
 
 /**
- * execute_command - forks and runs the command
- * @args: arguments
- * @name: shell name
- * @count: line count
+ * executer - handles fork and execution
+ * @args: list of arguments
+ * @nom_prog: name of the shell program
+ * @n_ligne: line number for error display
  */
-void execute_command(char **args, char *name, int count)
+void executer(char **args, char *nom_prog, int n_ligne)
 {
-	char *cmd_path = NULL;
-	pid_t pid;
-	int status;
+	char *chemin = NULL;
+	pid_t enfant_pid;
+	int etat;
 
 	if (args[0][0] == '/' || args[0][0] == '.')
 	{
 		if (access(args[0], X_OK) == 0)
-			cmd_path = strdup(args[0]);
+			chemin = strdup(args[0]);
 	}
 	else
-	{
-		cmd_path = find_path(args[0]);
-	}
+		chemin = chercher_chemin(args[0]);
 
-	if (!cmd_path)
+	if (!chemin)
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n", name, count, args[0]);
+		fprintf(stderr, "%s: %d: %s: not found\n",
+			nom_prog, n_ligne, args[0]);
 		return;
 	}
 
-	pid = fork();
-	if (pid == 0)
+	enfant_pid = fork();
+	if (enfant_pid == 0)
 	{
-		if (execve(cmd_path, args, environ) == -1)
+		if (execve(chemin, args, environ) == -1)
 		{
-			perror(name);
+			perror(nom_prog);
 			exit(127);
 		}
 	}
 	else
-	{
-		wait(&status);
-	}
-	free(cmd_path);
+		wait(&etat);
+
+	free(chemin);
 }
