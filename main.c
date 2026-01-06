@@ -20,9 +20,8 @@ int main(int ac, char **av)
 	while (1)
 	{
 		count++;
-
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "$ ", 2);
+			write(STDOUT_FILENO, "($) ", 4);
 
 		read = getline(&line, &len, stdin);
 		if (read == -1)
@@ -37,11 +36,16 @@ int main(int ac, char **av)
 
 		args = split_line(line);
 		if (args && args[0])
+		{
+			if (strcmp(args[0], "exit") == 0)
+			{
+				free_array(args);
+				break;
+			}
 			execute_command(args, line, av[0], count);
-
+		}
 		free_array(args);
 	}
-
 	free(line);
 	return (0);
 }
