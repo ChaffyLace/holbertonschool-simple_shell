@@ -15,15 +15,10 @@ void execute_command(char **args, char *line, char *name, int count)
 
 	(void)line;
 
-	/* If command contains '/', execute directly */
 	if (strchr(args[0], '/'))
-	{
 		cmd_path = strdup(args[0]);
-	}
 	else
-	{
 		cmd_path = find_path(args[0]);
-	}
 
 	if (!cmd_path)
 	{
@@ -41,7 +36,7 @@ void execute_command(char **args, char *line, char *name, int count)
 			exit(127);
 		}
 	}
-	else if (pid > 0)
+	else
 	{
 		wait(&status);
 	}
