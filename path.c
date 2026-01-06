@@ -8,10 +8,7 @@
  */
 char *find_path(char *cmd)
 {
-	char *path;
-	char *path_copy;
-	char *dir;
-	char *full_path;
+	char *path, *path_copy, *dir, *full_path;
 	struct stat st;
 
 	path = getenv("PATH");
@@ -24,6 +21,11 @@ char *find_path(char *cmd)
 	while (dir)
 	{
 		full_path = malloc(strlen(dir) + strlen(cmd) + 2);
+		if (!full_path)
+		{
+			free(path_copy);
+			return (NULL);
+		}
 		sprintf(full_path, "%s/%s", dir, cmd);
 
 		if (stat(full_path, &st) == 0)
