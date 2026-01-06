@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * main - main loop of the shell
- * @ac: argument count
- * @av: argument vector
- * Return: 0 on success
+ * main - shell main loop
+ * @ac: arg count
+ * @av: arg vector
+ * Return: 0
  */
 int main(int ac, char **av)
 {
@@ -29,18 +29,12 @@ int main(int ac, char **av)
 			break;
 		}
 
-		if (ligne[n_lus - 1] == '\n')
-			ligne[n_lus - 1] = '\0';
-
 		arguments = decouper_ligne(ligne);
 		if (arguments && arguments[0])
 		{
-			if (strcmp(arguments[0], "exit") == 0)
-			{
-				liberer_grille(arguments);
-				free(ligne);
-				break;
-			}
+			if (verifier_builtin(arguments, ligne))
+				continue;
+			
 			executer(arguments, av[0], compteur);
 		}
 		liberer_grille(arguments);
