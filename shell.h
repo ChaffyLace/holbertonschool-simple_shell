@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 extern char **environ;
 
-void execute_command(char **args, char *input, char *name, int count);
 char **split_line(char *line);
 void free_array(char **arr);
+char *find_path(char *cmd);
+void execute_command(char **args, char *line, char *name, int count);
 
 #endif
