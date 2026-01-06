@@ -14,29 +14,26 @@ void execute_command(char **args, char *line, char *name, int count)
 	char *cmd_path = NULL;
 
 	(void)line;
-	
-	if (strchr(args[0], '/'))
+
+	if (args[0][0] == '/' || args[0][0] == '.')
 	{
 		if (access(args[0], X_OK) == 0)
 			cmd_path = strdup(args[0]);
 	}
 	else
-	{
 		cmd_path = find_path(args[0]);
-	}
 
 	if (!cmd_path)
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n",
-			name, count, args[0]);
+		fprintf(stderr, "%s: %d: %s: not found\n", name, count, args[0]);
 		return;
 	}
 
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(cmd_path, args, environ);
-		perror(name);
+		if (execve(cmd_path, args, environ) == -1)
+			perror(name);
 		exit(127);
 	}
 	else
