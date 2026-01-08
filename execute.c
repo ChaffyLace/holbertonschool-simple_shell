@@ -1,41 +1,40 @@
 #include "shell.h"
 
 /**
- * executer_commande - run command
- * @arguments: args
- * @nom_shell: shell name
+ * executer - run command
+ * @args: arguments
+ * @nom_prog: shell name
  * @n_ligne: line count
  */
-void executer_commande(char **arguments, char *nom_shell, int n_ligne)
+void executer(char **args, char *nom_prog, int n_ligne)
 {
-	char *chemin_final = NULL;
-	pid_t mon_pid;
-	int statut;
+	char *chemin = NULL;
+	pid_t pid;
+	int status;
 
-	if (arguments[0][0] == '/' || arguments[0][0] == '.')
-		chemin_final = strdup(arguments[0]);
+	if (args[0][0] == '/' || args[0][0] == '.')
+		chemin = strdup(args[0]);
 	else
-		chemin_final = trouver_chemin(arguments[0]);
+		chemin = chercher_chemin(args[0]);
 
-	if (chemin_final == NULL)
+	if (chemin == NULL)
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n", nom_shell, n_ligne, arguments[0]);
+		fprintf(stderr, "%s: %d: %s: not found\n", nom_prog, n_ligne, args[0]);
 		return;
 	}
 
-	mon_pid = fork();
-	if (mon_pid == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		if (execve(chemin_final, arguments, environ) == -1)
+		if (execve(chemin, args, environ) == -1)
 		{
-			perror(nom_shell);
-			free(chemin_final);
+			perror(nom_prog);
+			free(chemin);
 			exit(127);
 		}
 	}
 	else
-	{
-		wait(&statut);
-	}
-	free(chemin_final);
+		wait(&status);
+
+	free(chemin);
 }
