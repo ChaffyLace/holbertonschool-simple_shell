@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * verifier_builtins - check for exit and env
- * @args: arguments
+ * verifier_builtins - exit and env
+ * @args: args
  * @ligne: buffer
- * Return: 1 if builtin, 0 if not
+ * Return: 1 or 0
  */
 int verifier_builtins(char **args, char *ligne)
 {
