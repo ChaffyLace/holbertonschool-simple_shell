@@ -13,8 +13,8 @@ int main(int ac, char **av)
 	ssize_t n_lus;
 	char **args;
 	int cpt = 0;
-	(void)ac;
 
+	(void)ac;
 	while (1)
 	{
 		cpt++;
@@ -33,10 +33,7 @@ int main(int ac, char **av)
 		if (args && args[0])
 		{
 			if (verifier_builtin(args, ligne))
-			{
-				liberer_grille(args);
 				continue;
-			}
 			executer(args, av[0], cpt);
 		}
 		liberer_grille(args);
