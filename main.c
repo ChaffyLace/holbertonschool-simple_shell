@@ -33,7 +33,7 @@ int main(int ac, char **av)
 		args = decouper_ligne(ligne);
 		if (args && args[0])
 		{
-			if (verifier_builtin(args, ligne))
+			if (verifier_builtin(args, ligne, status))
 				continue;
 			status = executer(args, av[0], cpt);
 		}
