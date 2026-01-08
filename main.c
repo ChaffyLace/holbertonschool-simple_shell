@@ -11,7 +11,7 @@ int main(int ac, char **av)
 	char *ligne = NULL;
 	size_t taille = 0;
 	ssize_t n_lus;
-	char **args;
+	char **arguments;
 	int compteur = 0;
 	(void)ac;
 
@@ -32,17 +32,17 @@ int main(int ac, char **av)
 		if (ligne[n_lus - 1] == '\n')
 			ligne[n_lus - 1] = '\0';
 
-		args = decouper_ligne(ligne);
-		if (args && args[0])
+		arguments = decouper_ligne(ligne);
+		if (arguments && arguments[0])
 		{
-			if (verifier_builtins(args, ligne))
+			if (verifier_builtin(arguments, ligne))
 			{
-				liberer_grille(args);
+				liberer_grille(arguments);
 				continue;
 			}
-			executer_commande(args, av[0], compteur);
+			executer(arguments, av[0], compteur);
 		}
-		liberer_grille(args);
+		liberer_grille(arguments);
 	}
 	free(ligne);
 	return (0);
