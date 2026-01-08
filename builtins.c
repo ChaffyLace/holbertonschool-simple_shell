@@ -4,9 +4,10 @@
  * verifier_builtin - check for exit or env
  * @args: arguments
  * @ligne: buffer to free
+ * @status: exit status
  * Return: 1 if builtin, 0 if not
  */
-int verifier_builtin(char **args, char *ligne)
+int verifier_builtin(char **args, char *ligne, int status)
 {
 	int i;
 
@@ -14,7 +15,7 @@ int verifier_builtin(char **args, char *ligne)
 	{
 		liberer_grille(args);
 		free(ligne);
-		exit(0);
+		exit(status);
 	}
 	if (strcmp(args[0], "env") == 0)
 	{
