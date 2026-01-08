@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * executer - run command
+ * executer - execute command
  * @args: arguments
- * @nom_prog: shell name
- * @n_ligne: line count
+ * @nom_prog: argv[0]
+ * @n_ligne: counter
  */
 void executer(char **args, char *nom_prog, int n_ligne)
 {
@@ -17,12 +17,11 @@ void executer(char **args, char *nom_prog, int n_ligne)
 	else
 		chemin = chercher_chemin(args[0]);
 
-	if (chemin == NULL)
+	if (!chemin)
 	{
 		fprintf(stderr, "%s: %d: %s: not found\n", nom_prog, n_ligne, args[0]);
 		return;
 	}
-
 	pid = fork();
 	if (pid == 0)
 	{
@@ -35,6 +34,5 @@ void executer(char **args, char *nom_prog, int n_ligne)
 	}
 	else
 		wait(&status);
-
 	free(chemin);
 }
