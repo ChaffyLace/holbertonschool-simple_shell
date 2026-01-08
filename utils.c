@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * decouper_ligne - split line into words
- * @ligne: raw line
- * Return: array of words
+ * decouper_ligne - split line
+ * @ligne: string
+ * Return: array
  */
 char **decouper_ligne(char *ligne)
 {
@@ -27,7 +27,7 @@ char **decouper_ligne(char *ligne)
 }
 
 /**
- * liberer_grille - free the array
+ * liberer_grille - free array
  * @grille: array
  */
 void liberer_grille(char **grille)
