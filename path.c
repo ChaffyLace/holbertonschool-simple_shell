@@ -20,21 +20,21 @@ char *_getenv(char *nom)
 }
 
 /**
- * trouver_chemin - search in PATH
- * @commande: cmd
+ * chercher_chemin - search in PATH
+ * @commande: command
  * Return: path
  */
-char *trouver_chemin(char *commande)
+char *chercher_chemin(char *commande)
 {
-	char *path_env, *copie_path, *dossier, *complet;
+	char *path_env, *copie, *dossier, *complet;
 	struct stat st;
 
 	path_env = _getenv("PATH");
 	if (!path_env || strlen(path_env) == 0)
 		return (NULL);
 
-	copie_path = strdup(path_env);
-	dossier = strtok(copie_path, ":");
+	copie = strdup(path_env);
+	dossier = strtok(copie, ":");
 	while (dossier)
 	{
 		complet = malloc(strlen(dossier) + strlen(commande) + 2);
@@ -44,12 +44,12 @@ char *trouver_chemin(char *commande)
 
 		if (stat(complet, &st) == 0)
 		{
-			free(copie_path);
+			free(copie);
 			return (complet);
 		}
 		free(complet);
 		dossier = strtok(NULL, ":");
 	}
-	free(copie_path);
+	free(copie);
 	return (NULL);
 }
