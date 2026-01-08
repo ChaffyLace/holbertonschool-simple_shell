@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * _getenv - find PATH in environment
- * @nom: name to find
- * Return: value string
+ * _getenv - find variable
+ * @nom: name
+ * Return: value
  */
 char *_getenv(char *nom)
 {
@@ -20,9 +20,9 @@ char *_getenv(char *nom)
 }
 
 /**
- * trouver_chemin - search command in PATH
- * @commande: cmd name
- * Return: full path or NULL
+ * trouver_chemin - search in PATH
+ * @commande: cmd
+ * Return: path
  */
 char *trouver_chemin(char *commande)
 {
