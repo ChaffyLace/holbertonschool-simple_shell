@@ -40,7 +40,7 @@ int main(int ac, char **av)
 				liberer_grille(arguments);
 				continue;
 			}
-			executer(arguments, av[0], compteur);
+			execle(arguments, av[0], compteur);
 		}
 		liberer_grille(arguments);
 	}
