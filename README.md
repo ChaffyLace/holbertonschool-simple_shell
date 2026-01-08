@@ -28,3 +28,5 @@ Bash
 
 $ echo "/bin/ls" | ./hsh
 hsh main.c shell.h
+
+<img width="517" height="772" alt="image" src="https://github.com/user-attachments/assets/d298001c-8d88-4081-a820-b1908c7fd7ee" />
