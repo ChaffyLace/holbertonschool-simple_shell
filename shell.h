@@ -15,7 +15,7 @@ char **decouper_ligne(char *ligne);
 void liberer_grille(char **grille);
 char *_getenv(char *nom);
 char *chercher_chemin(char *commande);
-void executer(char **args, char *nom_prog, int n_ligne);
+int executer(char **args, char *nom_prog, int n_ligne);
 int verifier_builtin(char **args, char *ligne);
 
 #endif
