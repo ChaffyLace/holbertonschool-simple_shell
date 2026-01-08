@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * executer_commande - run the command
+ * executer_commande - run command
  * @arguments: args
  * @nom_shell: shell name
  * @n_ligne: line count
