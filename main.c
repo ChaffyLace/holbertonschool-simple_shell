@@ -1,29 +1,27 @@
 #include "shell.h"
 
 /**
- * main - main loop of the simple shell
- * @ac: argument count (unused)
- * @av: argument vector (contains program name)
- * Return: 0 on success
+ * main - simple shell loop
+ * @ac: arg count
+ * @av: arg vector
+ * Return: 0
  */
 int main(int ac, char **av)
 {
 	char *ligne = NULL;
 	size_t taille = 0;
 	ssize_t n_lus;
-	char **arguments;
+	char **args;
 	int compteur = 0;
 	(void)ac;
 
 	while (1)
 	{
 		compteur++;
-
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "($) ", 4);
 
 		n_lus = getline(&ligne, &taille, stdin);
-
 		if (n_lus == -1)
 		{
 			if (isatty(STDIN_FILENO))
@@ -34,18 +32,17 @@ int main(int ac, char **av)
 		if (ligne[n_lus - 1] == '\n')
 			ligne[n_lus - 1] = '\0';
 
-		arguments = decouper_ligne(ligne);
-
-		if (arguments && arguments[0])
+		args = decouper_ligne(ligne);
+		if (args && args[0])
 		{
-			if (verifier_builtin(arguments, ligne))
+			if (verifier_builtins(args, ligne))
 			{
-				liberer_grille(arguments);
+				liberer_grille(args);
 				continue;
 			}
-			executer(arguments, av[0], compteur);
+			executer_commande(args, av[0], compteur);
 		}
-		liberer_grille(arguments);
+		liberer_grille(args);
 	}
 	free(ligne);
 	return (0);
