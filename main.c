@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * main - simple shell loop
+ * main - main shell loop
  * @ac: arg count
  * @av: arg vector
  * Return: 0
