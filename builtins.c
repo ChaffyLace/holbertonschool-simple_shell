@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * verifier_builtin - checks if the command is a builtin
- * @args: array of arguments
- * @ligne: the original line to free
- * Return: 1 if it was a builtin, 0 otherwise
+ * verifier_builtins - check for exit and env
+ * @args: arguments
+ * @ligne: buffer
+ * Return: 1 if builtin, 0 if not
  */
-int verifier_builtin(char **args, char *ligne)
+int verifier_builtins(char **args, char *ligne)
 {
 	int i;
 
@@ -26,6 +26,5 @@ int verifier_builtin(char **args, char *ligne)
 		}
 		return (1);
 	}
-
 	return (0);
 }
