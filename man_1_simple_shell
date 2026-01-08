@@ -1,0 +1,21 @@
+.TH SIMPLE_SHELL 1 "JANUARY 2026" "Holberton School" "Simple Shell Manual"
+.SH NAME
+simple_shell \- A simple UNIX command line interpreter
+.SH SYNOPSIS
+.B ./hsh
+.SH DESCRIPTION
+.B simple_shell
+reads commands from either standard input or a file and executes them.
+.SS Built-ins
+.TP
+.B exit
+Terminates the shell process.
+.TP
+.B env
+Prints the current environment variables.
+.SH OPTIONS
+This shell does not take any options at start.
+.SH AUTHOR
+Ton Nom
+.SH SEE ALSO
+sh(1), bash(1)
