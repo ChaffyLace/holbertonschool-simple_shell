@@ -18,11 +18,14 @@ int verifier_builtin(char **args, char *ligne)
 	}
 	if (strcmp(args[0], "env") == 0)
 	{
+		if (!environ)
+			return (1);
 		for (i = 0; environ[i]; i++)
 		{
 			write(STDOUT_FILENO, environ[i], strlen(environ[i]));
 			write(STDOUT_FILENO, "\n", 1);
 		}
+		liberer_grille(args);
 		return (1);
 	}
 	return (0);
