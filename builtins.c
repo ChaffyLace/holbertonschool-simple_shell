@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * verifier_builtins - exit and env
- * @args: args
+ * verifier_builtin - exit and env
+ * @args: arguments
  * @ligne: buffer
  * Return: 1 or 0
  */
-int verifier_builtins(char **args, char *ligne)
+int verifier_builtin(char **args, char *ligne)
 {
 	int i;
 
