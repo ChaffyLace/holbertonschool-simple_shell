@@ -4,7 +4,7 @@
  * verifier_builtin - exit and env
  * @args: arguments
  * @ligne: buffer
- * Return: 1 or 0
+ * Return: 1 if builtin, 0 if not
  */
 int verifier_builtin(char **args, char *ligne)
 {
