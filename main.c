@@ -1,44 +1,53 @@
 #include "shell.h"
 
 /**
- * main - simple shell loop
- * @ac: arg count
- * @av: arg vector
- * Return: exit status
+ * ctrlC - handle Ctrl+C
+ * @sig: unused
  */
+void ctrlC(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n$ ", 3);
+}
+
 int main(int ac, char **av)
 {
-	char *ligne = NULL;
-	size_t taille = 0;
-	ssize_t n_lus;
-	char **args;
-	int cpt = 0;
+	char *buffer = NULL;
+	char **cmd = NULL;
+	size_t size = 0;
+	unsigned int line = 0;
+	int interactive;
 	int status = 0;
 
 	(void)ac;
-	while (1)
+	signal(SIGINT, ctrlC);
+	interactive = isatty(STDIN_FILENO);
+
+	if (interactive)
+		write(STDOUT_FILENO, "$ ", 2);
+
+	while (getline(&buffer, &size, stdin) != -1)
 	{
-		cpt++;
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "($) ", 4);
-		n_lus = getline(&ligne, &taille, stdin);
-		if (n_lus == -1)
+		line++;
+		cmd = strtow(buffer);
+		if (cmd && cmd[0] && _strcmp(cmd[0], "exit") == 0 && !cmd[1])
 		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			break;
+			free_cmd(cmd);
+			free(buffer);
+			exit(status);
 		}
-		if (ligne[n_lus - 1] == '\n')
-			ligne[n_lus - 1] = '\0';
-		args = decouper_ligne(ligne);
-		if (args && args[0])
+		if (cmd)
 		{
-			if (verifier_builtin(args, ligne))
-				continue;
-			status = executer(args, av[0], cpt);
+			status = handle_cmd(cmd, av, line);
+			free_cmd(cmd);
 		}
-		liberer_grille(args);
+		if (interactive)
+			write(STDOUT_FILENO, "$ ", 2);
 	}
-	free(ligne);
+
+	if (interactive)
+		write(STDOUT_FILENO, "\n", 1);
+
+	free(buffer);
 	return (status);
 }
