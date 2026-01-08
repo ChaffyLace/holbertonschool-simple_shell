@@ -3,16 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
 
 extern char **environ;
-
-char *get_full_path(char *command);
-void free_args(char **args);
-int handle_builtin(char **args);
 
 #endif
