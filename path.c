@@ -1,60 +1,55 @@
 #include "shell.h"
 
 /**
- * _getenv - find variable in env
- * @name: name of variable
- * Return: value after '=' or NULL
+ * _getenv - find PATH in environment
+ * @nom: name to find
+ * Return: value string
  */
-char *_getenv(char *name)
+char *_getenv(char *nom)
 {
 	int i = 0;
-	int nlen;
+	int len = strlen(nom);
 
-	if (!name || !environ)
-		return (NULL);
-
-	nlen = strlen(name);
-	while (environ[i])
+	while (environ && environ[i])
 	{
-		if (strncmp(environ[i], name, nlen) == 0 && environ[i][nlen] == '=')
-			return (environ[i] + nlen + 1);
+		if (strncmp(environ[i], nom, len) == 0 && environ[i][len] == '=')
+			return (environ[i] + len + 1);
 		i++;
 	}
 	return (NULL);
 }
 
 /**
- * chercher_chemin - finds command path
- * @commande: command name
+ * trouver_chemin - search command in PATH
+ * @commande: cmd name
  * Return: full path or NULL
  */
-char *chercher_chemin(char *commande)
+char *trouver_chemin(char *commande)
 {
-	char *path, *copie, *dossier, *complet;
+	char *path_env, *copie_path, *dossier, *complet;
 	struct stat st;
 
-	path = _getenv("PATH");
-	if (!path || strlen(path) == 0)
+	path_env = _getenv("PATH");
+	if (!path_env || strlen(path_env) == 0)
 		return (NULL);
 
-	copie = strdup(path);
-	dossier = strtok(copie, ":");
+	copie_path = strdup(path_env);
+	dossier = strtok(copie_path, ":");
 	while (dossier)
 	{
 		complet = malloc(strlen(dossier) + strlen(commande) + 2);
-		if (!complet)
-			return (NULL);
 		strcpy(complet, dossier);
 		strcat(complet, "/");
 		strcat(complet, commande);
+
 		if (stat(complet, &st) == 0)
 		{
-			free(copie);
+			free(copie_path);
 			return (complet);
 		}
 		free(complet);
 		dossier = strtok(NULL, ":");
 	}
-	free(copie);
+	free(copie_path);
 	return (NULL);
 }
