@@ -1,33 +1,32 @@
 #include "shell.h"
 
 /**
- * decouper_ligne - split line
- * @ligne: string
- * Return: array
+ * decouper_ligne - split string
+ * @ligne: input
+ * Return: array of strings
  */
 char **decouper_ligne(char *ligne)
 {
-	char **mots;
-	char *morceau;
+	char **tokens;
+	char *t;
 	int i = 0;
 
-	mots = malloc(sizeof(char *) * 1024);
-	if (!mots)
+	tokens = malloc(sizeof(char *) * 1024);
+	if (!tokens)
 		return (NULL);
-
-	morceau = strtok(ligne, " \t\n");
-	while (morceau)
+	t = strtok(ligne, " \t\r\n\a");
+	while (t)
 	{
-		mots[i] = strdup(morceau);
+		tokens[i] = strdup(t);
 		i++;
-		morceau = strtok(NULL, " \t\n");
+		t = strtok(NULL, " \t\r\n\a");
 	}
-	mots[i] = NULL;
-	return (mots);
+	tokens[i] = NULL;
+	return (tokens);
 }
 
 /**
- * liberer_grille - free array
+ * liberer_grille - free pointer array
  * @grille: array
  */
 void liberer_grille(char **grille)
