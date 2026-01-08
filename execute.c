@@ -20,9 +20,7 @@ int executer(char **args, char *nom_prog, int n_ligne)
 			chemin = strdup(args[0]);
 	}
 	else
-	{
 		chemin = chercher_chemin(args[0]);
-	}
 	if (!chemin)
 	{
 		fprintf(stderr, "%s: %d: %s: not found\n",
@@ -47,9 +45,7 @@ int executer(char **args, char *nom_prog, int n_ligne)
 			status = WEXITSTATUS(status);
 	}
 	else
-	{
 		perror("fork");
-	}
 	if (chemin != args[0])
 		free(chemin);
 	return (status);
