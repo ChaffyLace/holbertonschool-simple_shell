@@ -3,27 +3,29 @@
 /**
  * executer - execute a command
  * @args: array of arguments
- * @nom_prog: program name for errors
- * @n_ligne: line number for errors
+ * @nom_prog: program name
+ * @n_ligne: line number
+ * Return: exit status (0 if success, 127 if not found, etc)
  */
-void executer(char **args, char *nom_prog, int n_ligne)
+int executer(char **args, char *nom_prog, int n_ligne)
 {
 	pid_t pid;
-	int status;
-	char *chemin;
-	struct stat st;
+	int status = 0;
+	char *chemin = NULL;
 
-	if (stat(args[0], &st) == 0)
-		chemin = args[0];
-	else
+	if (strchr(args[0], '/') != NULL)
 	{
+		if (stat(args[0], &status) == 0)
+			chemin = strdup(args[0]);
+	}
+	else
 		chemin = chercher_chemin(args[0]);
-		if (!chemin)
-		{
-			fprintf(stderr, "%s: %d: %s: not found\n",
-				nom_prog, n_ligne, args[0]);
-			return;
-		}
+
+	if (!chemin)
+	{
+		fprintf(stderr, "%s: %d: %s: not found\n",
+			nom_prog, n_ligne, args[0]);
+		return (127);
 	}
 
 	pid = fork();
@@ -31,15 +33,23 @@ void executer(char **args, char *nom_prog, int n_ligne)
 	{
 		if (execve(chemin, args, environ) == -1)
 		{
-			perror("execve");
-			exit(1);
+			perror(nom_prog);
+			free(chemin);
+			liberer_grille(args);
+			exit(127);
 		}
 	}
 	else if (pid > 0)
+	{
 		wait(&status);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+	}
 	else
 		perror("fork");
 
 	if (chemin != args[0])
 		free(chemin);
+		
+	return (status);
 }
