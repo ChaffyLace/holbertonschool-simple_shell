@@ -1,38 +1,53 @@
 #include "shell.h"
 
 /**
- * executer - execute command
- * @args: arguments
- * @nom_prog: argv[0]
- * @n_ligne: counter
+ * _getenv - find env variable
+ * @nom: name
+ * Return: value
  */
-void executer(char **args, char *nom_prog, int n_ligne)
+char *_getenv(char *nom)
 {
-	char *chemin = NULL;
-	pid_t pid;
-	int status;
+	int i = 0;
+	size_t len = strlen(nom);
 
-	if (args[0][0] == '/' || args[0][0] == '.')
-		chemin = strdup(args[0]);
-	else
-		chemin = chercher_chemin(args[0]);
-
-	if (!chemin)
+	while (environ && environ[i])
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n", nom_prog, n_ligne, args[0]);
-		return;
+		if (strncmp(environ[i], nom, len) == 0 && environ[i][len] == '=')
+			return (environ[i] + len + 1);
+		i++;
 	}
-	pid = fork();
-	if (pid == 0)
+	return (NULL);
+}
+
+/**
+ * chercher_chemin - find command in PATH
+ * @commande: cmd name
+ * Return: full path
+ */
+char *chercher_chemin(char *commande)
+{
+	char *path, *copie, *token, *complet;
+	struct stat st;
+
+	path = _getenv("PATH");
+	if (!path || strlen(path) == 0)
+		return (NULL);
+	copie = strdup(path);
+	token = strtok(copie, ":");
+	while (token)
 	{
-		if (execve(chemin, args, environ) == -1)
+		complet = malloc(strlen(token) + strlen(commande) + 2);
+		strcpy(complet, token);
+		strcat(complet, "/");
+		strcat(complet, commande);
+		if (stat(complet, &st) == 0)
 		{
-			perror(nom_prog);
-			free(chemin);
-			exit(127);
+			free(copie);
+			return (complet);
 		}
+		free(complet);
+		token = strtok(NULL, ":");
 	}
-	else
-		wait(&status);
-	free(chemin);
+	free(copie);
+	return (NULL);
 }
