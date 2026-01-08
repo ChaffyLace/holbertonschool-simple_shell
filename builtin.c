@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * verifier_builtin - exit and env
+ * verifier_builtin - check for exit or env
  * @args: arguments
- * @ligne: buffer
+ * @ligne: buffer to free
  * Return: 1 if builtin, 0 if not
  */
 int verifier_builtin(char **args, char *ligne)
@@ -16,7 +16,6 @@ int verifier_builtin(char **args, char *ligne)
 		free(ligne);
 		exit(0);
 	}
-
 	if (strcmp(args[0], "env") == 0)
 	{
 		for (i = 0; environ[i]; i++)
